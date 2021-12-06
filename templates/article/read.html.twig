@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+        <div class="px-0">
+            <h1 class="display-4 font-italic">{{ article.title }}</h1>
+            {% for item in article.categoryid %}
+                    <span class="badge badge-primary">{{ item.name }}</span>
+            {% endfor %}
+            <div class="d-flex">
+                <p class="lead my-3">{{ article.content }}</p>
+                {% if article.picture == true %}              
+                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ article.picture }}"
+                    alt="Card image cap">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

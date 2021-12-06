@@ -1,0 +1,8 @@
+App\Entity\Article:
+    article{1..2}:
+        title: '<word()>'
+        content: '<text(500)>'
+        picture: '<imageUrl(200, 250)>'
+        createdAt: '<dateTime()>'
+        userid: '@user*'
+        categoryid: ['@category*']

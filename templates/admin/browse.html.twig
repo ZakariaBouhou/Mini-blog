@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="text-center d-flex justify-content-around">
+        <a class="btn btn-success mt-5 mb-5" href="{{ path('admin_article_add') }}" role="button">Ajouter un article</a>
+        <a class="btn btn-primary mt-5 mb-5" href="{{ path('inscription') }}" role="button">Inscription</a>
+        <a class="btn btn-dark mt-5 mb-5" href="{{ path('logout') }}" role="button">Déconnexion</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Picture</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}        
+                <tr>
+                    <th scope="row"><a href="{{ path('read', {id: article.articleid}) }}">{{ article.articleid }}</a></th>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.content|u.truncate(150, '...') }}</td>
+                    <td>{{ article.createdAt|date('d-m-Y') }}</td>
+                    <td><img src="{{ article.picture }}"></img></td>
+                    <td><a class="btn btn-primary" href="{{ path('admin_article_edit', {id: article.articleid}) }}">Modifier</a></td>
+                    <td><a class="btn btn-danger" href=" {{ path('admin_article_delete', {id: article.articleid}) }}">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
