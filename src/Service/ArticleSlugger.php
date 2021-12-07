@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class SubjectSlugger
+class ArticleSlugger
 {
     private $slugger;
 

@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -44,12 +46,20 @@ class EditArticleType extends AbstractType
                 ])
             ],
         ])
+        ->add('Categoryid', EntityType::class, [
+            'class' => Category::class,
+            'choice_label' => 'name',
+            'label' => 'Choix de la catégorie',
+            'multiple' => true,
+            'expanded' => true,
+        ])
         ->add('add', SubmitType::class, [
             'label' => 'Modifier l\'article',
             'attr' => [
                 'class' => 'btn-primary'
             ]
-            ]); 
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

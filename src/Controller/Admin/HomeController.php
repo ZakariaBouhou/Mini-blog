@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController extends AbstractController
+
+class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="main")
+     * @Route("/admin/home", name="admin_home")
      */
     public function browse(ArticleRepository $articleRepository): Response
     {
         $allArticle = $articleRepository->findAll();
-        return $this->render('main/browse.html.twig', [
+
+        return $this->render('admin/home.html.twig', [
             'articles' => $allArticle,
         ]);
     }
+
 }

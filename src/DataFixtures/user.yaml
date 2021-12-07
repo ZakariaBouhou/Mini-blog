@@ -1,5 +1,5 @@
 App\Entity\User:
-    user{1..1}:
+    user{0..0}:
         pseudo: '<username()>'
         email: '<email()>'
         password: '<password()>'
