@@ -25,11 +25,11 @@
                 <header class="blog-header py-3">
                     <div class="row flex-nowrap justify-content-center align-items-center">
                         <div class="col-4 text-center">
-                            <a class="blog-header-logo text-dark" href="{{ path('main') }}">Hello World</a>
-                            <a class="text-primary d-block" href="{{ path('login') }}">Connexion</a>
+                            <a class="blog-header-logo text-dark" href="{{ path('main') }}">Hello World</a>                     
+                                <a class="text-primary d-{{ is_granted('ROLE_ADMIN') ? 'none' : 'block' }}" href="{{ path('login') }}">Connexion</a>           
                             {% if is_granted('ROLE_ADMIN') %}
-                                <a class="text-primary d-block" href="{{ path('admin_article_browse') }}">Tableau de bord</a>
-                                <a class="text-danger d-block" href="{{ path('logout') }}">Déconnexion</a>
+                                <a class="text-primary d-block" href="{{ path('admin_home') }}">Tableau de bord</a>
+                                <a class="text-danger d-{{ app.request.attributes.get('_route') == 'admin_home' ? 'none' : 'block' }}" href="{{ path('logout') }}">Déconnexion</a>                       
                             {% endif %}
                         </div>
                     </div>

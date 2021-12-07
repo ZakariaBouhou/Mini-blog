@@ -15,12 +15,13 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class UserType extends AbstractType
+class EditProfilType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [                           
+            ->add('email', EmailType::class, [ 
+                'required' => false                           
             ])
             ->add('pseudo', TextType::class, [
                 'constraints' => [
@@ -38,7 +39,7 @@ class UserType extends AbstractType
                     new NotBlank([ 'normalizer' => 'trim']),
                     new Length([ 'min' => 8]),
                     new Regex([
-                        // https://regexr.com/3bfsi
+                        // https://Regexr.com/3bfsi
                         'pattern' => '#(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).#',
                         'message' => 'Le mot de passe doit comporter au minimum une majuscule, une minuscule, un chiffre et un caractère spécial.',
                     ])

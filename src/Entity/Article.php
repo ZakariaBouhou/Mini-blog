@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Article
@@ -27,6 +28,7 @@ class Article
      * @var string|null
      *
      * @ORM\Column(name="title", type="string", length=64, nullable=true)
+     * @Assert\NotBlank(message = "Le titre ne doit pas être vide")
      */
     private $title;
 
@@ -34,6 +36,7 @@ class Article
      * @var string|null
      *
      * @ORM\Column(name="content", type="text", length=0, nullable=true)
+     * @Assert\NotBlank(message = "Le message ne doit pas être vide")
      */
     private $content;
 

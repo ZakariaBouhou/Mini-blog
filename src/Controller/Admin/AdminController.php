@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Form\EditArticleType;
 use App\Form\NewArticleType;
 use App\Repository\ArticleRepository;
+use App\Service\ArticleSlugger;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,23 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/admin/article", name="admin_article_")
  */
 class AdminController extends AbstractController
-{
-    /**
-     * @Route("/", name="browse")
-     */
-    public function browse(ArticleRepository $articleRepository): Response
-    {
-        $allArticle = $articleRepository->findAll();
-
-        return $this->render('admin/browse.html.twig', [
-            'articles' => $allArticle,
-        ]);
-    }
-
+{ 
     /**
      * @Route("/add", name="add")
      */
-    public function create(Article $article = null, Request $request, EntityManagerInterface $em): Response
+    public function create(Article $article = null, Request $request, EntityManagerInterface $em, ArticleSlugger $articleSlugger): Response
     {
         
         $article = new Article();
@@ -41,16 +30,19 @@ class AdminController extends AbstractController
         $form = $this->createForm(NewArticleType::class, $article); 
         
         $form->handleRequest($request);
-
-        //dump($form);
-
-        
+     
         if($form->isSubmitted() && $form->isValid()) {
             
             $article->setCreatedAt(new DateTime());
 
             $article->setPicture($form->get('picture')->getData());          
-            $article->setTitle($form->get('title')->getData());          
+            $article->setTitle($form->get('title')->getData()); 
+            
+            $user = $this->getUser();
+            $article->setUserid($user);
+            
+            $slug = $articleSlugger->slugify($form->get('title')->getData());
+            $article->setSlug($slug);
 
             $em->persist($article);
             $em->flush();
@@ -64,9 +56,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", requirements={"id" : "\d+"})
+     * @Route("/{slug}/edit", name="edit")
      */
-    public function edit(Article $article, Request $request): Response
+    public function edit(Article $article, Request $request, ArticleSlugger $articleSlugger): Response
     {
         $form = $this->createForm(EditArticleType::class, $article);
         
@@ -74,6 +66,10 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
+
+            $slug = $articleSlugger->slugify($form->get('title')->getData());
+            $article->setSlug($slug);
+
             $article = $form->getData();
             $em->flush();
 
@@ -86,7 +82,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="delete", requirements={"id" : "\d+"})
+     * @Route("/{slug}/delete", name="delete")
      */
     public function delete(Article $article): Response
 

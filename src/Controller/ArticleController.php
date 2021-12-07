@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\ArticleRepository;
+use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,14 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/article/{id}", name="read", requirements={"id"="\d+"})
+     * @Route("/article/{slug}", name="read_slug")
      */
-    public function read(ArticleRepository $articleRepository, int $id): Response
-    {
-        $oneArticle = $articleRepository->oneArticleWithHerCategory($id);
-        
+    public function readSlug(Article $article): Response
+    {        
         return $this->render('article/read.html.twig', [
-            'article' => $oneArticle
+            'article' => $article,
         ]);
     }
 }

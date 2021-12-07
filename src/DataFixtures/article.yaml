@@ -1,5 +1,5 @@
 App\Entity\Article:
-    article{1..2}:
+    article{0..0}:
         title: '<word()>'
         content: '<text(500)>'
         picture: '<imageUrl(200, 250)>'

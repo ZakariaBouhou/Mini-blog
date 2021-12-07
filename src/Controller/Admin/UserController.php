@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\EditProfilType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,10 +39,52 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->redirectToRoute('admin_article_browse');
+            $this->redirectToRoute('login');
         }
 
         return $this->render('admin/inscription.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/profile", name="profil")
+     */
+    public function read(): Response
+    {
+        $user = $this->getUser();  
+
+        return $this->render('admin/profile.html.twig', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @Route("/profile/edit", name="profil_edit")
+     */
+    public function edit(Request $request, UserPasswordHasherInterface $encoder): Response
+    {
+        $user = $this->getUser(); 
+        
+        $form = $this->createForm(EditProfilType:: class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $hash = $encoder->hashPassword($user, $user->getPassword());
+            $user->setPassword($hash);
+
+            $user = $form->getData();
+            $em->flush();
+
+            return $this->redirectToRoute('admin_article_browse');
+        }
+
+        return $this->render('admin/profile-edit.html.twig', [
+            'user' => $user,
             'form' => $form->createView(),
         ]);
     }

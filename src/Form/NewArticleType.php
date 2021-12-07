@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -32,7 +34,6 @@ class NewArticleType extends AbstractType
         ->add('picture', FileType::class, [
             'label' => 'Chargez ici une photo',
             'required' => false,
-            // 'mapped' => false,
             'constraints' => [
                 new File([
                     'maxSize' => '1024k',
@@ -44,12 +45,19 @@ class NewArticleType extends AbstractType
                 ])
             ],
         ])
+        ->add('categoryid', EntityType::class, [
+            'class' => Category::class,
+            'choice_label' => 'name',
+            'label' => 'Choix de la catégorie',
+            'multiple' => true,
+            'expanded' => true,
+        ])
         ->add('add', SubmitType::class, [
             'label' => 'Ajouter l\'article',
             'attr' => [
                 'class' => 'btn-primary'
             ]
-        ]);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
