@@ -13,6 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/admin/article", name="admin_article_")
@@ -47,7 +50,7 @@ class AdminController extends AbstractController
             $em->persist($article);
             $em->flush();
 
-            return $this->redirectToRoute('admin_article_browse');
+            return $this->redirectToRoute('admin_home');
         }
 
         return $this->render('article/add.html.twig', [
@@ -73,7 +76,7 @@ class AdminController extends AbstractController
             $article = $form->getData();
             $em->flush();
 
-            return $this->redirectToRoute('admin_article_browse');
+            return $this->redirectToRoute('admin_home');
         }
 
         return $this->render('article/edit.html.twig', [          
@@ -84,14 +87,19 @@ class AdminController extends AbstractController
     /**
      * @Route("/{slug}/delete", name="delete")
      */
-    public function delete(Article $article): Response
+    public function delete(Article $article, Request $request, CsrfTokenManagerInterface $csrfTokenManagerInterface): Response
+    {       
+       $token = new CsrfToken('deleteArticle', $request->query->get('_csrf_token'));
 
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
-        $em->flush();
+       if ($csrfTokenManagerInterface->isTokenValid($token)) {      
 
-        return $this->redirectToRoute('admin_article_browse');
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($article);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_home');
+        }
+       
     }
 
 }
