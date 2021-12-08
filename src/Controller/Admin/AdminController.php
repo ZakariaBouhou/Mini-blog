@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Form\EditArticleType;
 use App\Form\NewArticleType;
-use App\Repository\ArticleRepository;
 use App\Service\ArticleSlugger;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
@@ -25,9 +23,8 @@ class AdminController extends AbstractController
     /**
      * @Route("/add", name="add")
      */
-    public function create(Article $article = null, Request $request, EntityManagerInterface $em, ArticleSlugger $articleSlugger): Response
-    {
-        
+    public function create(Request $request, EntityManagerInterface $em, ArticleSlugger $articleSlugger): Response
+    {      
         $article = new Article();
     
         $form = $this->createForm(NewArticleType::class, $article); 
@@ -47,6 +44,7 @@ class AdminController extends AbstractController
             $slug = $articleSlugger->slugify($form->get('title')->getData());
             $article->setSlug($slug);
 
+            $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
 
@@ -67,13 +65,14 @@ class AdminController extends AbstractController
         
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            $em = $this->getDoctrine()->getManager();
-
+        if ($form->isSubmitted() && $form->isValid()) {
+          
             $slug = $articleSlugger->slugify($form->get('title')->getData());
             $article->setSlug($slug);
-
+            
             $article = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             return $this->redirectToRoute('admin_home');
