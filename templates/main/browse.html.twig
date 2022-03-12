@@ -14,7 +14,7 @@
                         <a href="{{ path('read_slug', {slug: article.slug}) }}">Continue reading</a>
                     </div>
                     {% if article.picture == true %}                  
-                        <img class="card-img-right flex-auto d-none d-md-block" src="{{ article.picture }}"
+                        <img class="card-img-right flex-auto d-none d-md-block" src="{{ asset('/uploads/'~ article.picture) }}"
                         alt="Card image cap">
                     {% endif %}
                 </div>

@@ -3,7 +3,9 @@
 {% block main %}
     <div class="text-center d-flex justify-content-around">
         <a class="btn btn-success mt-5 mb-5" href="{{ path('admin_article_add') }}" role="button">Ajouter un article</a>
-        <a class="btn btn-primary mt-5 mb-5" href="{{ path('inscription') }}" role="button">Inscription</a>
+        {% if not is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-primary mt-5 mb-5" href="{{ path('inscription') }}" role="button">Inscription</a>
+        {% endif %}
         <a class="btn btn-info mt-5 mb-5" href="{{ path('profil') }}" role="button">Mon profil</a>
         <a class="btn btn-dark mt-5 mb-5" href="{{ path('logout') }}" role="button">Déconnexion</a>
     </div>
@@ -24,7 +26,7 @@
                     <td><a href="{{ path('read_slug', {slug: article.slug}) }}">{{ article.title }}<a></td>
                     <td>{{ article.content|u.truncate(150, '...') }}</td>
                     <td>{{ article.createdAt|date('d-m-Y') }}</td>
-                    <td><img src="{{ article.picture }}"></img></td>
+                    <td><img src="{{ asset('/uploads/'~ article.picture) }}"></img></td>
                     <td><a class="btn btn-primary" href="{{ path('admin_article_edit', {slug: article.slug}) }}">Modifier</a></td>
                     <td><a class="btn btn-danger" href=" {{ path('admin_article_delete', {slug: article.slug, _csrf_token: csrf_token('deleteArticle')}) }}">Supprimer</a></td>
                 </tr>

@@ -9,8 +9,9 @@
             {% endfor %}
             <div class="d-flex">
                 <p class="lead my-3">{{ article.content }}</p>
+                
                 {% if article.picture == true %}              
-                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ article.picture }}"
+                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ asset('/uploads/'~ article.picture) }}"
                     alt="Card image cap">
                 {% endif %}
             </div>

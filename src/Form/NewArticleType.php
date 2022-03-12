@@ -34,16 +34,16 @@ class NewArticleType extends AbstractType
         ->add('picture', FileType::class, [
             'label' => 'Chargez ici une photo',
             'required' => false,
+            'mapped' => false,
             'constraints' => [
                 new File([
                     'maxSize' => '1024k',
                     'mimeTypes' => [
-                        'image/jpg',
-                        'image/png',
+                        'image/*',
                     ],
-                    'mimeTypesMessage' => 'Merci d\'insérer un ficher d\'image valide',
+                    'mimeTypesMessage' => 'Please upload a valid jpg document',
                 ])
-            ],
+            ]
         ])
         ->add('categoryid', EntityType::class, [
             'class' => Category::class,

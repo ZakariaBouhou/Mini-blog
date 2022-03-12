@@ -38,7 +38,6 @@ class UserType extends AbstractType
                     new NotBlank([ 'normalizer' => 'trim']),
                     new Length([ 'min' => 8]),
                     new Regex([
-                        // https://regexr.com/3bfsi
                         'pattern' => '#(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).#',
                         'message' => 'Le mot de passe doit comporter au minimum une majuscule, une minuscule, un chiffre et un caractère spécial.',
                     ])

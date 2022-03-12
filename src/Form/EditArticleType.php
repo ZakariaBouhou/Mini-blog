@@ -39,10 +39,9 @@ class EditArticleType extends AbstractType
                 new File([
                     'maxSize' => '1024k',
                     'mimeTypes' => [
-                        'image/jpg',
-                        'image/png',
+                        'image/*',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    'mimeTypesMessage' => 'Please upload a valid picture document',
                 ])
             ],
         ])

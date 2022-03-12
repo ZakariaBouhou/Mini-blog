@@ -26,11 +26,13 @@
                     <div class="row flex-nowrap justify-content-center align-items-center">
                         <div class="col-4 text-center">
                             <a class="blog-header-logo text-dark" href="{{ path('main') }}">Hello World</a>                     
-                                <a class="text-primary d-{{ is_granted('ROLE_ADMIN') ? 'none' : 'block' }}" href="{{ path('login') }}">Connexion</a>           
+                                <a class="btn-primary d-{{ is_granted('ROLE_ADMIN') ? 'none' : 'block' }}" href="{{ path('login') }}">Connexion</a> 
+                                <div class="d-flex justify-content-around">          
                             {% if is_granted('ROLE_ADMIN') %}
-                                <a class="text-primary d-block" href="{{ path('admin_home') }}">Tableau de bord</a>
-                                <a class="text-danger d-{{ app.request.attributes.get('_route') == 'admin_home' ? 'none' : 'block' }}" href="{{ path('logout') }}">Déconnexion</a>                       
+                                <a class="btn btn-primary d-block" href="{{ path('admin_home') }}">Tableau de bord</a>
+                                <a class="btn btn-danger d-{{ app.request.attributes.get('_route') == 'admin_home' ? 'none' : 'block' }}" href="{{ path('logout') }}">Déconnexion</a>                       
                             {% endif %}
+                            </div>
                         </div>
                     </div>
                 </header>

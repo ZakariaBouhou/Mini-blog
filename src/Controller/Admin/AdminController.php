@@ -35,7 +35,21 @@ class AdminController extends AbstractController
             
             $article->setCreatedAt(new DateTime());
 
-            $article->setPicture($form->get('picture')->getData());          
+            $image = $form->get('picture')->getData();   
+            
+            
+            if ($image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier, 
+                );
+                
+                $article->setPicture($fichier);
+            }
+
+
             $article->setTitle($form->get('title')->getData()); 
             
             $user = $this->getUser();
@@ -66,6 +80,19 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('picture')->getData();   
+                      
+            if ($image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier, 
+                );
+                
+                $article->setPicture($fichier);
+            }
           
             $slug = $articleSlugger->slugify($form->get('title')->getData());
             $article->setSlug($slug);
