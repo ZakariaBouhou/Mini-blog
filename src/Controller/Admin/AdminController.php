@@ -26,6 +26,8 @@ class AdminController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em, ArticleSlugger $articleSlugger): Response
     {      
         $article = new Article();
+
+        //$img = new Picture();
     
         $form = $this->createForm(NewArticleType::class, $article); 
         
@@ -34,9 +36,8 @@ class AdminController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             
             $article->setCreatedAt(new DateTime());
-
+           
             $image = $form->get('picture')->getData();   
-            
             
             if ($image) {
                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
@@ -47,6 +48,7 @@ class AdminController extends AbstractController
                 );
                 
                 $article->setPicture($fichier);
+                //$article->setPicture($img);
             }
 
 
@@ -60,6 +62,7 @@ class AdminController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
+            //$em->persist($img);
             $em->flush();
 
             return $this->redirectToRoute('admin_home');
@@ -121,6 +124,28 @@ class AdminController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($article);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_home');
+        }
+       
+    }
+
+    /**
+     * @Route("/{slug}/delete/picture", name="delete_picture")
+     */
+    public function deletePicture(Article $article, Request $request, CsrfTokenManagerInterface $csrfTokenManagerInterface): Response
+    {       
+       $token = new CsrfToken('deletePicture', $request->query->get('_csrf_token'));
+
+       if ($csrfTokenManagerInterface->isTokenValid($token)) {      
+
+            $picture = $article->getPicture();
+
+            unlink($this->getParameter('images_directory').'/'.$picture);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($picture);
             $em->flush();
 
             return $this->redirectToRoute('admin_home');
