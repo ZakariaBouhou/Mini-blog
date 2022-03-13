@@ -14,7 +14,6 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            //->add('articleid')
             ->add('add', SubmitType::class, [
                 'label' => 'Ajouter la catégorie',
                 'attr' => [
