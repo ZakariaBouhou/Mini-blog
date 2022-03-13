@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\EditPasswordType;
 use App\Form\EditProfilType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,40 +53,72 @@ class UserController extends AbstractController
      */
     public function read(): Response
     {
-        $user = $this->getUser();  
-
-        return $this->render('admin/profile.html.twig', [
-            'user' => $user
-        ]);
+        {
+            $user = $this->getUser(); 
+     
+            return $this->render('admin/profile.html.twig', [
+                'user' => $user,
+            ]);
+        }
     }
-
     /**
      * @Route("/profile/edit", name="profil_edit")
      */
-    public function edit(Request $request, UserPasswordHasherInterface $encoder): Response
+    public function editProfil(Request $request): Response
     {
-        $user = $this->getUser(); 
-        
-        $form = $this->createForm(EditProfilType:: class, $user);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
-
-            $hash = $encoder->hashPassword($user, $user->getPassword());
-            $user->setPassword($hash);
-
-            $user = $form->getData();
-            $em->flush();
-
-            return $this->redirectToRoute('admin_article_browse');
+        {
+            $user = $this->getUser(); 
+            
+            $form = $this->createForm(EditProfilType:: class, $user);
+    
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+    
+                $em = $this->getDoctrine()->getManager();
+    
+                $user = $form->getData();
+                $em->flush();
+    
+                return $this->redirectToRoute('admin_home');
+            }
+    
+            return $this->render('admin/profile-edit.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
+            ]);
         }
+    }
 
-        return $this->render('admin/profile-edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
+    /**
+     * @Route("/profile/password", name="profil_edit_password")
+     */
+    public function editPassword(Request $request, UserPasswordHasherInterface $encoder): Response
+    {
+        {
+            $user = $this->getUser(); 
+            
+            $form = $this->createForm(EditPasswordType:: class, $user);
+    
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+    
+                $em = $this->getDoctrine()->getManager();
+    
+                $hash = $encoder->hashPassword($user, $user->getPassword());
+                $user->setPassword($hash);
+    
+                $user = $form->getData();
+                $em->flush();
+    
+                return $this->redirectToRoute('admin_home');
+            }
+    
+            return $this->render('admin/editPassword.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
+            ]);
+        }
     }
 }

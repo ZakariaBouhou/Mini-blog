@@ -27,10 +27,17 @@
                     <td><a href="{{ path('read_slug', {slug: article.slug}) }}">{{ article.title }}<a></td>
                     <td>{{ article.content|u.truncate(150, '...') }}</td>
                     <td>{{ article.createdAt|date('d-m-Y') }}</td>
-                    <td><img src="{{ asset('/uploads/'~ article.picture) }}"></img></td>
+                    {% if article.picture %}                  
+                        <td><img src="{{ asset('/uploads/'~ article.picture) }}"></img></td>
+                    {% else %}
+                        <td>Pas d'image</td>
+                    {% endif %}
+                    
                     <td><a class="btn btn-primary" href="{{ path('admin_article_edit', {slug: article.slug}) }}">Modifier</a></td>
                     <td><a class="btn btn-danger" href=" {{ path('admin_article_delete', {slug: article.slug, _csrf_token: csrf_token('deleteArticle')}) }}">Supprimer</a></td>
-                    <td><a class="btn btn-info" href=" {{ path('admin_article_delete_picture', {slug: article.slug, _csrf_token: csrf_token('deletePicture')}) }}">Supprimer image</a></td>
+                    {% if article.picture %}                   
+                        <td><a class="btn btn-info" href=" {{ path('admin_article_delete_picture', {slug: article.slug, _csrf_token: csrf_token('deletePicture')}) }}">Supprimer image</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>

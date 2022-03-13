@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220310161351 extends AbstractMigration
+final class Version20220313145930 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20220310161351 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE article (articleid INT AUTO_INCREMENT NOT NULL, userid INT DEFAULT NULL, title VARCHAR(64) DEFAULT NULL, content LONGTEXT DEFAULT NULL, picture VARCHAR(255) DEFAULT NULL, created_at DATETIME DEFAULT NULL, slug VARCHAR(255) DEFAULT NULL, INDEX userid (userid), PRIMARY KEY(articleid)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE article (articleid INT AUTO_INCREMENT NOT NULL, userid INT DEFAULT NULL, title VARCHAR(64) DEFAULT NULL, content LONGTEXT DEFAULT NULL, created_at DATETIME DEFAULT NULL, slug VARCHAR(255) DEFAULT NULL, picture VARCHAR(255) DEFAULT NULL, INDEX userid (userid), PRIMARY KEY(articleid)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE belong_to (articleid INT NOT NULL, categoryid INT NOT NULL, INDEX IDX_C86E276D6B26844C (articleid), INDEX IDX_C86E276D9B32FD3 (categoryid), PRIMARY KEY(articleid, categoryid)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE category (categoryid INT AUTO_INCREMENT NOT NULL, name VARCHAR(64) DEFAULT NULL, PRIMARY KEY(categoryid)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (userid INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, pseudo VARCHAR(64) NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(userid)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

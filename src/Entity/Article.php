@@ -83,6 +83,7 @@ class Article
     private $picture;
 
 
+
     /**
      * Constructor
      */
@@ -189,6 +190,23 @@ class Article
     public function setPicture(?string $picture): self
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getImage(): ?Picture
+    {
+        return $this->image;
+    }
+
+    public function setImage(Picture $image): self
+    {
+        // set the owning side of the relation if necessary
+        if ($image->getArticle() !== $this) {
+            $image->setArticle($this);
+        }
+
+        $this->image = $image;
 
         return $this;
     }
