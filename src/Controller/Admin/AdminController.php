@@ -141,6 +141,7 @@ class AdminController extends AbstractController
        if ($csrfTokenManagerInterface->isTokenValid($token)) {      
 
             $picture = $article->getPicture();
+            //dd($picture);
 
             unlink($this->getParameter('images_directory').'/'.$picture);
 

@@ -3,5 +3,8 @@
 {% block title %}Mon profil{% endblock %}
 
 {% block main %}
-        <p class="text-center"><a class="btn btn-success mt-5 mb-5" href="{{ path('profil_edit') }}" role="button">Modifier mon profil</a></p>
+        <div class="d-flex justify-content-around">
+                <a class="btn btn-info mt-5 mb-5" href="{{ path('profil_edit') }}" role="button">Modifier mes informations</a> 
+                <a class="btn btn-info mt-5 mb-5" href="{{ path('profil_edit_password') }}" role="button">Modifier mon mot de passe</a> 
+        </div>
 {% endblock %}
