@@ -10,8 +10,8 @@
             <div class="d-flex">
                 <p class="lead my-3">{{ article.content }}</p>
                 
-                {% if article.picture == true %}              
-                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ asset('/uploads/'~ article.picture) }}"
+                {% if article.image == true %}              
+                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ asset('/uploads/'~ article.image) }}"
                     alt="Card image cap">
                 {% endif %}
             </div>

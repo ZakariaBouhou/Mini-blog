@@ -5,12 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Category
  *
  * @ORM\Table(name="category")
  * @ORM\Entity
+ * @UniqueEntity("name", message="Cette catégorie est déja présente")
+ * 
  */
 class Category
 {
@@ -26,7 +30,7 @@ class Category
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=64, nullable=true)
+     * @ORM\Column(name="name", type="string", length=64, nullable=true, unique=true)
      */
     private $name;
 

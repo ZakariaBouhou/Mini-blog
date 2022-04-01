@@ -31,7 +31,7 @@ class EditArticleType extends AbstractType
                 'placeholder' => 'Contenu de l\'article'
             ]
         ])
-        ->add('picture', FileType::class, [
+        ->add('image', FileType::class, [
             'label' => 'Chargez ici une photo',
             'required' => false,
             'mapped' => false,
