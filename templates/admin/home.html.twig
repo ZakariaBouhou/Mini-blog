@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/flashMessages.js') }}"></script>
+{% endblock %}
+
 {% block main %}
     <div class="text-center d-flex justify-content-around">
         <a class="btn btn-success mt-5 mb-5" href="{{ path('admin_article_add') }}" role="button">Ajouter un article</a>
-        <a class="btn btn-warning mt-5 mb-5" href="{{ path('admin_category_add') }}" role="button">Ajouter une catégorie</a>
+        <a class="btn btn-warning mt-5 mb-5" href="{{ path('admin_category_add') }}" role="button">Gestion des catégories</a>
         {% if not is_granted('ROLE_ADMIN') %}
             <a class="btn btn-primary mt-5 mb-5" href="{{ path('inscription') }}" role="button">Inscription</a>
         {% endif %}
@@ -11,13 +15,20 @@
         <a class="btn btn-dark mt-5 mb-5" href="{{ path('logout') }}" role="button">Déconnexion</a>
     </div>
     <h1 class="text-center pb-5">Tableau de bord de <span class="text-danger">{{ app.user.pseudo }}</span></h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="success alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <table class="table">
         <thead>
             <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Content</th>
-            <th scope="col">Created At</th>
-            <th scope="col">Picture</th>
+            <th scope="col">Titre</th>
+            <th scope="col">Contenu</th>
+            <th scope="col">Crée le</th>
+            <th scope="col">Image</th>
             <th scope="col">Action</th>
             </tr>
         </thead>
@@ -27,16 +38,15 @@
                     <td><a href="{{ path('read_slug', {slug: article.slug}) }}">{{ article.title }}<a></td>
                     <td>{{ article.content|u.truncate(150, '...') }}</td>
                     <td>{{ article.createdAt|date('d-m-Y') }}</td>
-                    {% if article.picture %}                  
-                        <td><img src="{{ asset('/uploads/'~ article.picture) }}"></img></td>
+                    {% if article.image %}                  
+                        <td><img class="w-50" src="{{ asset('/uploads/'~ article.image) }}"></img></td>
                     {% else %}
                         <td>Pas d'image</td>
                     {% endif %}
-                    
                     <td><a class="btn btn-primary" href="{{ path('admin_article_edit', {slug: article.slug}) }}">Modifier</a></td>
-                    <td><a class="btn btn-danger" href=" {{ path('admin_article_delete', {slug: article.slug, _csrf_token: csrf_token('deleteArticle')}) }}">Supprimer</a></td>
-                    {% if article.picture %}                   
-                        <td><a class="btn btn-info" href=" {{ path('admin_article_delete_picture', {slug: article.slug, _csrf_token: csrf_token('deletePicture')}) }}">Supprimer image</a></td>
+                    <td><a class="btn btn-danger" href=" {{ path('admin_article_delete', {slug: article.slug, _csrf_token: csrf_token('deleteArticle')}) }}">Supprimer article</a></td>
+                    {% if article.image %}                   
+                        <td><a class="btn btn-info" href=" {{ path('admin_article_delete_image', {id: article.image.id}) }}">Supprimer image</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}

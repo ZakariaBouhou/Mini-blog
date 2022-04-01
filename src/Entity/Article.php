@@ -78,11 +78,10 @@ class Article
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity=Picture::class, inversedBy="article", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
      */
-    private $picture;
-
-
+    private $image;
 
     /**
      * Constructor
@@ -182,33 +181,15 @@ class Article
         return $this;
     }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getImage(): ?Picture
     {
         return $this->image;
     }
 
-    public function setImage(Picture $image): self
+    public function setImage(Picture $image = null): self
     {
-        // set the owning side of the relation if necessary
-        if ($image->getArticle() !== $this) {
-            $image->setArticle($this);
-        }
-
         $this->image = $image;
 
         return $this;
     }
-
 }

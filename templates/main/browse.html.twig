@@ -13,9 +13,9 @@
                         <p class="card-text mb-auto">{{ article.content|u.truncate(150, '...') }}</p>
                         <a href="{{ path('read_slug', {slug: article.slug}) }}">Continue reading</a>
                     </div>
-                    {% if article.picture == true %}                  
-                        <img class="card-img-right flex-auto d-none d-md-block" src="{{ asset('/uploads/'~ article.picture) }}"
-                        alt="Card image cap">
+                    {% if article.image == true %}                  
+                        <a href="{{ path('read_slug', {slug: article.slug}) }}"><img class="card-img-right flex-auto d-none d-md-block" src="{{ asset('/uploads/'~ article.image) }}"
+                        alt="Card image cap"></a>
                     {% endif %}
                 </div>
             </div>

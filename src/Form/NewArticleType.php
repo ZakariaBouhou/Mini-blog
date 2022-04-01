@@ -31,7 +31,7 @@ class NewArticleType extends AbstractType
                 'placeholder' => 'Contenu de l\'article'
             ]
         ])
-        ->add('picture', FileType::class, [
+        ->add('image', FileType::class, [
             'label' => 'Chargez ici une photo',
             'required' => false,
             'mapped' => false,
@@ -41,7 +41,7 @@ class NewArticleType extends AbstractType
                     'mimeTypes' => [
                         'image/*',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid jpg document',
+                    'mimeTypesMessage' => 'Merci d\'insérer un format d\'image valide (jpeg, jpg, png, gif, bmp...)',
                 ])
             ]
         ])
